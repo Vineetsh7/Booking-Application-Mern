@@ -2,20 +2,20 @@ import express, { Request, Response } from "express";
 import User from "../models/user.model";
  const router = express.Router();
 import jwt from "jsonwebtoken";
-// import { check, validationResult } from "express-validator";
+import { check, validationResult } from "express-validator";
 router.post(
   "/register",
-//   [
-//     check("firstName", "First Name is required").isString(),
-//     check("lastName", "Last Name is required").isString(),
-//     check("password", "Password with 6 or more character is required").isLength({ min: 6 }),
-//     check("email", "Email is required").isEmail(),
-//   ], 
+  [
+    check("firstName", "First Name is required").isString(),
+    check("lastName", "Last Name is required").isString(),
+    check("password", "Password with 6 or more character is required").isLength({ min: 6 }),
+    check("email", "Email is required").isEmail(),
+  ], 
   async (req: Request, res: Response) => {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ message: errors.array() });
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
     try {
       let user = await User.findOne({
         email: req.body.email,
